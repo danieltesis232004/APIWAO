@@ -69,10 +69,6 @@ export const crearUsuario = async (req, res) => {
     }
 };
 
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { sql } from '../bd.js';
-
 export const loginUsuario = async (req, res) => {
 
     try {
@@ -169,7 +165,6 @@ export const perfilUsuario = async (req, res) => {
     }
 };
 
-import bcrypt from 'bcrypt';
 
 export const actualizarContrasena = async (req, res) => {
 
