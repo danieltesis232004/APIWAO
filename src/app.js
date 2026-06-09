@@ -4,6 +4,7 @@ import cors from 'cors';
 import usuariosRoutes from './Routes/usuario.routes.js';
 import negocioRoutes from './Routes/Negocios.routes.js';
 import horariosRoutes from './Routes/Horarios.routes.js';
+import imagenesRoutes from './Routes/Imagenes.routes.js';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/negocios', negocioRoutes);
 app.use('/api/horarios', horariosRoutes);
+app.use('/api/imagenes', imagenesRoutes);
 // 404
 app.use((req, res) => {
   res.status(404).json({
