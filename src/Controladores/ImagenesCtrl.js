@@ -227,7 +227,7 @@ export const eliminarImagen = async (req, res) => {
         }
 
         await sql.query(
-            `DELETE FROM Imagenes
+            `DELETE FROM ImagenesNegocios
              WHERE id_imagen = ?`,
             [id_imagen]
         );
