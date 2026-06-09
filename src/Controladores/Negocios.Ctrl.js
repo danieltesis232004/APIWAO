@@ -133,25 +133,19 @@ export const obtenerNegocio = async (req, res) => {
 // =======================
 export const misNegocios = async (req, res) => {
 
+    console.log("ENTRO A MIS NEGOCIOS");
+    console.log(req.usuario);
+
     try {
 
-        console.log("USUARIO TOKEN:");
-        console.log(req.usuario);
-
         const id_usuario = req.usuario.id_usuario;
-
-        console.log("ID USUARIO:", id_usuario);
 
         const [negocios] = await sql.query(
             `SELECT *
              FROM Negocios
-             WHERE id_usuario = ?
-             ORDER BY fecha_registro DESC`,
+             WHERE id_usuario = ?`,
             [id_usuario]
         );
-
-        console.log("NEGOCIOS:");
-        console.log(negocios);
 
         res.json(negocios);
 
