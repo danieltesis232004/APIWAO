@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import usuariosRoutes from './Routes/usuario.routes.js';
+import negocioRoutes from './Routes/Negocios.routes.js';
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.get('/', (req, res) => {
 
 // RUTAS
 app.use('/api/usuarios', usuariosRoutes);
-
+app.use('/api/negocios', negocioRoutes);
 // 404
 app.use((req, res) => {
   res.status(404).json({
