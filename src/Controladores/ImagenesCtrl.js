@@ -20,7 +20,7 @@ export const crearImagen = async (req, res) => {
         }
 
         const [result] = await sql.query(
-            `INSERT INTO Imagenes (
+            `INSERT INTO ImagenesNegocios (
                 id_negocio,
                 url
             )
@@ -57,7 +57,7 @@ export const obtenerImagenes = async (req, res) => {
 
         const [imagenes] = await sql.query(
             `SELECT *
-             FROM Imagenes
+             FROM ImagenesNegocios
              ORDER BY fecha_subida DESC`
         );
 
@@ -85,7 +85,7 @@ export const obtenerImagen = async (req, res) => {
 
         const [imagen] = await sql.query(
             `SELECT *
-             FROM Imagenes
+             FROM ImagenesNegocios
              WHERE id_imagen = ?`,
             [id_imagen]
         );
@@ -123,7 +123,7 @@ export const obtenerImagenesPorNegocio = async (req, res) => {
 
         const [imagenes] = await sql.query(
             `SELECT *
-             FROM Imagenes
+             FROM ImagenesNegocios
              WHERE id_negocio = ?
              ORDER BY fecha_subida DESC`,
             [id_negocio]
@@ -158,7 +158,7 @@ export const actualizarImagen = async (req, res) => {
 
         const [existe] = await sql.query(
             `SELECT id_imagen
-             FROM Imagenes
+             FROM ImagenesNegocios
              WHERE id_imagen = ?`,
             [id_imagen]
         );
@@ -212,7 +212,7 @@ export const eliminarImagen = async (req, res) => {
 
         const [existe] = await sql.query(
             `SELECT id_imagen
-             FROM Imagenes
+             FROM ImagenesNegocios
              WHERE id_imagen = ?`,
             [id_imagen]
         );
