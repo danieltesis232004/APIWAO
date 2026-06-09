@@ -3,7 +3,11 @@ import { sql } from '../bd.js';
 
 export const crearNegocio = async (req, res) => {
 
+    const connection = await sql.getConnection();
+
     try {
+
+        await connection.beginTransaction();
 
         const id_usuario = req.usuario.id_usuario;
 
@@ -16,10 +20,12 @@ export const crearNegocio = async (req, res) => {
             latitud,
             longitud,
             telefono,
-            sitio_web
+            sitio_web,
+            id_plan
         } = req.body;
 
-        const [result] = await sql.query(
+        // Crear negocio
+        const [result] = await connection.query(
             `INSERT INTO Negocios(
                 id_usuario,
                 id_tipo_negocio,
@@ -47,17 +53,67 @@ export const crearNegocio = async (req, res) => {
             ]
         );
 
+        const id_negocio = result.insertId;
+
+        // Fechas de la suscripción
+        const fechaInicio = new Date();
+
+        const fechaFin = new Date();
+
+        switch (id_plan) {
+            case 1: // Básico
+                fechaFin.setMonth(fechaFin.getMonth() + 1);
+                break;
+
+            case 2: // Semestral
+                fechaFin.setMonth(fechaFin.getMonth() + 6);
+                break;
+
+            case 3: // Premium
+                fechaFin.setMonth(fechaFin.getMonth() + 12);
+                break;
+
+            default:
+                throw new Error('Plan no válido');
+        }
+
+        // Crear suscripción
+        await connection.query(
+            `INSERT INTO Suscripciones(
+                id_negocio,
+                id_plan,
+                fecha_inicio,
+                fecha_fin,
+                estado
+            )
+            VALUES (?, ?, ?, ?, 'ACTIVA')`,
+            [
+                id_negocio,
+                id_plan,
+                fechaInicio.toISOString().split('T')[0],
+                fechaFin.toISOString().split('T')[0]
+            ]
+        );
+
+        await connection.commit();
+
         res.status(201).json({
             success: true,
-            id_negocio: result.insertId
+            id_negocio
         });
 
     } catch (error) {
+
+        await connection.rollback();
 
         res.status(500).json({
             success: false,
             error: error.message
         });
+
+    } finally {
+
+        connection.release();
 
     }
 
@@ -294,6 +350,45 @@ export const eliminarNegocio = async (req, res) => {
         res.status(500).json({
             success: false,
             error: error.message
+        });
+
+    }
+
+};
+export const obtenerPlanNegocio = async (req, res) => {
+
+    try {
+
+        const { id_negocio } = req.params;
+
+        const [datos] = await sql.query(`
+            SELECT
+                p.*,
+                s.id_suscripcion,
+                s.fecha_inicio,
+                s.fecha_fin,
+                s.estado
+            FROM Suscripciones s
+            INNER JOIN Planes p
+                ON p.id_plan = s.id_plan
+            WHERE s.id_negocio = ?
+            LIMIT 1
+        `,[id_negocio]);
+
+        if(datos.length === 0){
+            return res.status(404).json({
+                success:false,
+                message:'El negocio no tiene suscripción'
+            });
+        }
+
+        res.json(datos[0]);
+
+    } catch(error){
+
+        res.status(500).json({
+            success:false,
+            error:error.message
         });
 
     }

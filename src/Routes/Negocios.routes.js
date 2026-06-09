@@ -56,5 +56,10 @@ router.delete(
     verificarToken,
     eliminarNegocio
 );
+router.get(
+    '/plan/:id_negocio',
+    verificarToken,
+    obtenerPlanNegocio
+);
 
 export default router;
