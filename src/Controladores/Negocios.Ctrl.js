@@ -214,17 +214,24 @@ export const obtenerNegocio = async (req, res) => {
 // =======================
 export const misNegocios = async (req, res) => {
 
-    console.log("ENTRO A MIS NEGOCIOS");
-    console.log(req.usuario);
-
     try {
 
         const id_usuario = req.usuario.id_usuario;
 
         const [negocios] = await sql.query(
-            `SELECT *
-             FROM Negocios
-             WHERE id_usuario = ?`,
+            `SELECT
+                n.*,
+                p.nombre AS plan_nombre,
+                s.fecha_inicio,
+                s.fecha_fin,
+                s.estado AS estado_suscripcion
+            FROM Negocios n
+            LEFT JOIN Suscripciones s
+                ON n.id_negocio = s.id_negocio
+                AND s.estado = 'ACTIVA'
+            LEFT JOIN Planes p
+                ON s.id_plan = p.id_plan
+            WHERE n.id_usuario = ?`,
             [id_usuario]
         );
 
@@ -242,7 +249,6 @@ export const misNegocios = async (req, res) => {
     }
 
 };
-
 // =======================
 // ACTUALIZAR NEGOCIO
 // =======================
