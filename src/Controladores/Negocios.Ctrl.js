@@ -221,11 +221,13 @@ export const misNegocios = async (req, res) => {
         const [negocios] = await sql.query(
             `SELECT
                 n.*,
+                tn.nombre AS tipo_nombre,
                 p.nombre AS plan_nombre,
                 s.fecha_inicio,
-                s.fecha_fin,
-                s.estado AS estado_suscripcion
+                s.fecha_fin
             FROM Negocios n
+            LEFT JOIN Tipos_Negocio tn
+                ON n.id_tipo_negocio = tn.id_tipo_negocio
             LEFT JOIN Suscripciones s
                 ON n.id_negocio = s.id_negocio
                 AND s.estado = 'ACTIVA'
