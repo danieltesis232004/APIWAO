@@ -6,7 +6,7 @@ import {
     crearHorario,
     actualizarHorario,
     eliminarHorario
-} from '../controllers/HorariosCtrl.js';
+} from '../Controladores/HorariosCtrl.js';
 
 const router = Router();
 
