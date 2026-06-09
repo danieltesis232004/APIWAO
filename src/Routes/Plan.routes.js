@@ -9,9 +9,9 @@ const router = Router();
 
 
 router.get(
-    '/',
+    '/negocio/:id_negocio',
     verificarToken,
-    obtenerPlanes
+    obtenerPlanNegocio
 );
 
 
