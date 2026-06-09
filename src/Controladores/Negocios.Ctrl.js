@@ -135,7 +135,12 @@ export const misNegocios = async (req, res) => {
 
     try {
 
+        console.log("USUARIO TOKEN:");
+        console.log(req.usuario);
+
         const id_usuario = req.usuario.id_usuario;
+
+        console.log("ID USUARIO:", id_usuario);
 
         const [negocios] = await sql.query(
             `SELECT *
@@ -145,9 +150,14 @@ export const misNegocios = async (req, res) => {
             [id_usuario]
         );
 
+        console.log("NEGOCIOS:");
+        console.log(negocios);
+
         res.json(negocios);
 
     } catch (error) {
+
+        console.log(error);
 
         res.status(500).json({
             success: false,
