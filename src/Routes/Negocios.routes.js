@@ -27,6 +27,13 @@ router.get(
     obtenerNegocios
 );
 
+// Mis negocios
+router.get(
+    '/mis-negocios',
+    verificarToken,
+    misNegocios
+);
+
 // Obtener negocio por id
 router.get(
     '/:id_negocio',
@@ -34,12 +41,7 @@ router.get(
     obtenerNegocio
 );
 
-// Mis negocios
-router.get(
-    '/mis-negocios',
-    verificarToken,
-    misNegocios
-);
+
 
 // Actualizar negocio
 router.put(
