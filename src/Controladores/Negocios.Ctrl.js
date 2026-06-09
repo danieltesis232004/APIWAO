@@ -21,7 +21,8 @@ export const crearNegocio = async (req, res) => {
             longitud,
             telefono,
             sitio_web,
-            id_plan
+            id_plan,
+            horarios
         } = req.body;
 
         // Crear negocio
@@ -94,6 +95,30 @@ export const crearNegocio = async (req, res) => {
                 fechaFin.toISOString().split('T')[0]
             ]
         );
+        // Crear horarios
+        if (horarios && horarios.length > 0) {
+
+            for (const horario of horarios) {
+
+                await connection.query(
+                    `INSERT INTO Horarios(
+                id_negocio,
+                dia_semana,
+                hora_apertura,
+                hora_cierre
+            )
+            VALUES (?, ?, ?, ?)`,
+                    [
+                        id_negocio,
+                        horario.dia_semana,
+                        horario.hora_apertura,
+                        horario.hora_cierre
+                    ]
+                );
+
+            }
+
+        }
 
         await connection.commit();
 
@@ -373,22 +398,22 @@ export const obtenerPlanNegocio = async (req, res) => {
                 ON p.id_plan = s.id_plan
             WHERE s.id_negocio = ?
             LIMIT 1
-        `,[id_negocio]);
+        `, [id_negocio]);
 
-        if(datos.length === 0){
+        if (datos.length === 0) {
             return res.status(404).json({
-                success:false,
-                message:'El negocio no tiene suscripción'
+                success: false,
+                message: 'El negocio no tiene suscripción'
             });
         }
 
         res.json(datos[0]);
 
-    } catch(error){
+    } catch (error) {
 
         res.status(500).json({
-            success:false,
-            error:error.message
+            success: false,
+            error: error.message
         });
 
     }
