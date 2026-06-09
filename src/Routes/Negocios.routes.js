@@ -6,7 +6,8 @@ import {
     obtenerNegocio,
     misNegocios,
     actualizarNegocio,
-    eliminarNegocio
+    eliminarNegocio,
+    obtenerPlanNegocio
 } from '../Controladores/Negocios.Ctrl.js';
 
 import { verificarToken } from '../middlewares/auth.js';
