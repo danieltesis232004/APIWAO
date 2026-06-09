@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import usuariosRoutes from './Routes/usuario.routes.js';
 import negocioRoutes from './Routes/Negocios.routes.js';
+import horariosRoutes from './Routes/Horarios.routes.js';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 // RUTAS
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/negocios', negocioRoutes);
+app.use('/api/horarios', horariosRoutes);
 // 404
 app.use((req, res) => {
   res.status(404).json({
